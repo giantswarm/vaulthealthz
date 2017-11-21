@@ -97,7 +97,7 @@ func (s *Service) GetHealthz(ctx context.Context) (healthz.Response, error) {
 		ch := make(chan string, 1)
 
 		go func() {
-			_, err := s.vaultClient.Sys().ListMounts()
+			_, err := s.vaultClient.Sys().Health()
 			if err != nil {
 				ch <- err.Error()
 				return
