@@ -103,6 +103,12 @@ func (s *Service) GetHealthz(ctx context.Context) (healthz.Response, error) {
 				return
 			}
 
+			err = s.updateTokenTTLMetric()
+			if err != nil {
+				ch <- err.Error()
+				return
+			}
+
 			ch <- ""
 		}()
 
@@ -126,4 +132,31 @@ func (s *Service) GetHealthz(ctx context.Context) (healthz.Response, error) {
 	}
 
 	return response, nil
+}
+
+func (s *Service) updateTokenTTLMetric() error {
+	secret, err := s.vaultClient.Auth().Token().LookupSelf()
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	fmt.Printf("\n")
+	fmt.Printf("secret start\n")
+	fmt.Printf("%#v\n", secret)
+	fmt.Printf("secret end\n")
+	fmt.Printf("\n")
+
+	fmt.Printf("\n")
+	fmt.Printf("secret.Data start\n")
+	fmt.Printf("%#v\n", secret.Data)
+	fmt.Printf("secret.Data end\n")
+	fmt.Printf("\n")
+
+	fmt.Printf("\n")
+	fmt.Printf("secret.WrapInfo start\n")
+	fmt.Printf("%#v\n", secret.WrapInfo)
+	fmt.Printf("secret.Data end\n")
+	fmt.Printf("\n")
+
+	return nil
 }
