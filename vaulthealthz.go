@@ -3,7 +3,6 @@ package vaulthealthz
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -158,7 +157,7 @@ func (s *Service) updateTokenTTLMetric() error {
 	}
 
 	if key == nil {
-		log.Print("Vault token does not expire, skipping metric update")
+		s.logger.Log("Vault token does not expire, skipping metric update")
 		return nil
 	}
 
