@@ -155,6 +155,13 @@ func (s *Service) updateTokenTTLMetric() error {
 	if !ok {
 		return microerror.Maskf(executionFailedError, "value of '%s' must exist in order to collect metrics for the Vault token expiration", ExpireTimeKey)
 	}
+
+	if key == nil {
+		// Vault token does not expire.
+		tokenExpireTimeGauge.Set(-1)
+		return nil
+	}
+
 	e, ok := key.(string)
 	if !ok {
 		return microerror.Maskf(executionFailedError, "'%#v' must be string in order to collect metrics for the Vault token expiration", key)
