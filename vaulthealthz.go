@@ -157,7 +157,7 @@ func (s *Service) updateTokenTTLMetric() error {
 	}
 
 	if key == nil {
-		s.logger.r.logger.LogCtx(ctx, "level", "info", "message", "Vault token does not expire, skipping metric update")
+		s.logger.r.logger.Log("level", "info", "message", "Vault token does not expire, skipping metric update")
 		return nil
 	}
 
